@@ -1,12 +1,24 @@
-import ms from 'ms';
-import lunchtime from './lunchtime.js';
-import millisecondsUntil from './millisecondsUntil.js';
+import Bowser from "bowser";
 
-export default function howLongUntilLunch(hours, minutes) {
-	// lunch is at 12.30
-	if (hours === undefined) hours = 12;
-	if (minutes === undefined) minutes = 30;
+// Validates user's browser is web3 capable
+const funcs = {
+  browserIsWeb3Capable() {
+    // User Agent
+    const browser = Bowser.getParser(window.navigator.userAgent);
+    const userAgent = browser.parse().parsedResult;
 
-	var millisecondsUntilLunchTime = millisecondsUntil(lunchtime(hours, minutes));
-	return ms(millisecondsUntilLunchTime, { long: true });
-}
+    const validBrowser = browser.satisfies({
+      desktop: {
+        chrome: ">49",
+        firefox: ">52",
+        opera: ">36"
+      }
+    })
+      ? true
+      : false;
+
+    return validBrowser;
+  }
+};
+
+export default funcs;
